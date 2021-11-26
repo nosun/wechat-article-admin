@@ -19,7 +19,6 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "nosun/ueditor": "^3.0",
-        "orangehill/iseed": "^3.0",
         "predis/predis": "^1.1",
         "voku/simple_html_dom": "dev-master"
     },
@@ -29,6 +28,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
+        "orangehill/iseed": "^3.0",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
