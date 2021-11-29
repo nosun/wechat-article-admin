@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\WechatAccount\AddToTask;
 use App\Models\WechatAccount;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -26,11 +27,17 @@ class WechatAccountController extends AdminController
     {
         $grid = new Grid(new WechatAccount());
 
+        $grid->model()->orderByDesc('id');
+
         $grid->column('id', __('Id'));
         $grid->column('account', __('Account'));
         $grid->column('__biz', __('Biz'));
         $grid->column('qr_code', __('Qr code'))->image('',100);
         $grid->column('spider_time', __('Spider time'));
+
+        $grid->actions(function($actions){
+            $actions->add(new AddToTask());
+        });
 
         return $grid;
     }

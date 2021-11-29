@@ -34,19 +34,19 @@ class WechatArticleController extends AdminController
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
             $filter->column(1 / 2, function ($filter) {
-                $filter->equal('account', __('Account'));
+                $filter->equal('account.account', __('Account'));
                 $filter->like('title', __('Title'));
                 $filter->where(function ($query) {
                     switch ($this->input) {
                         case '1':
                             // custom complex query if the 'yes' option is selected
-                            $query->where('copyright_status', 11);
+                            $query->where('copyright_stat', 11);
                             break;
                         case '2':
-                            $query->where('copyright_status', 100);
+                            $query->where('copyright_stat', 100);
                             break;
                         case '3':
-                            $query->where('copyright_status', '>', 100);
+                            $query->where('copyright_stat', '>', 100);
                             break;
                     }
                 }, __('Copyright status'))->select([
@@ -75,11 +75,11 @@ class WechatArticleController extends AdminController
         })->width(320);
         $grid->column('read_num', __('Read num'))->sortable();
         $grid->column('like_num', __('Like num'))->sortable();
-        $grid->column('account', __('Account'));
+        $grid->column('account.account', __('Account'));
         $grid->column('status', __('Status'))->display(function ($value) {
             return WechatArticle::$states[$value];
         });
-        $grid->column('copyright_status', __('Copyright status'))->display(function ($value) {
+        $grid->column('copyright_stat', __('Copyright status'))->display(function ($value) {
             return WechatArticle::getCopyRight($value);
         });
         $grid->column('author', __('Author'));
@@ -108,22 +108,6 @@ class WechatArticleController extends AdminController
         return $grid;
     }
 
-//    /**
-//     * Show interface.
-//     *
-//     * @param mixed   $id
-//     * @param Content $content
-//     *
-//     * @return Content
-//     */
-//    public function show($id, Content $content)
-//    {
-//        $article = WechatArticle::find($id);
-//        return $content
-//            ->title($this->title())
-//            ->description($this->description['show'] ?? trans('admin.show'))
-//            ->body(new Box('文章详情', view('admin.wechat-articles.show', ['article' => $article])));
-//    }
 
     /**
      * Make a show builder.
@@ -136,7 +120,7 @@ class WechatArticleController extends AdminController
         $show = new Show(WechatArticle::findOrFail($id));
 
         $show->field('title', __('Title'))->html();
-        $show->field('content', __('Content'))->html();
+        $show->field('content.content', __('Content'))->html();
 
         $show->panel()->tools(function ($tools) {
             $tools->disableDelete();
@@ -157,12 +141,12 @@ class WechatArticleController extends AdminController
         // 第一列占据1/2的页面宽度
         $form->column(1 / 2, function ($form) {
             $form->text('title', __('Title'))->setWidth(10);
-            $form->UEditor('content_html', __('Content html'))->setWidth(10);
+            $form->UEditor('content.content_html', __('Content html'))->setWidth(10);
         });
 
         $form->column(1 / 2, function ($form) {
             $form->text('author', __('Author'))->setWidth(10);
-            $form->UEditor('content', __('Content'))->setWidth(10);
+            $form->UEditor('content.content', __('Content'))->setWidth(10);
             $form->select('status', __('Status'))
                 ->options(WechatArticle::$states)
                 ->setWidth(4);

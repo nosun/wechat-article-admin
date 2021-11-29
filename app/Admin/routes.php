@@ -16,7 +16,7 @@ Route::group([
     $router->resource('wechat-article-tasks', WechatArticleTaskController::class);
     $router->resource('wechat-account-tasks', WechatAccountTaskController::class);
     $router->resource('wechat-accounts', WechatAccountController::class);
-    $router->resource('wechat-article-lists', WechatArticleListController::class);
+    $router->resource('wechat-article-list', WechatArticleListController::class);
     $router->resource('wechat-articles', WechatArticleController::class);
     $router->resource('wechat-article-comments', WechatArticleCommentController::class);
     $router->resource('wechat-article-dynamics', WechatArticleDynamicController::class);

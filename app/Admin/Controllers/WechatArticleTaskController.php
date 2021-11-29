@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\WechatArticleTask\AllClear;
 use App\Models\WechatArticleTask;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -28,10 +29,28 @@ class WechatArticleTaskController extends AdminController
 
         $grid->model()->orderByDesc('id');
 
+        $grid->filter(function ($filter) {
+            $filter->disableIdFilter();
+            $filter->column(1 / 2, function ($filter) {
+                $filter->equal('account.account', __('Account'));
+            });
+
+            $filter->column(1 / 2, function ($filter) {
+                $filter->equal('state', __('Status'))->select(WechatArticleTask::$states);
+            });
+        });
+
         $grid->column('id', __('Id'));
-        $grid->column('__biz', __('Biz'));
-        $grid->column('sn', __('Sn'));
-        $grid->column('state', __('State'));
+        $grid->column('account.account', __('Account'));
+        $grid->column('article.title', __('Title'));
+        $grid->column('state', __('State'))->display(function($value){
+            return WechatArticleTask::$states[$value];
+        });
+
+        $grid->tools(function($tools){
+            $tools->append(new AllClear());
+        });
+
         return $grid;
     }
 

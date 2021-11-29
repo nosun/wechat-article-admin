@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Services\WechatArticleFormatService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class WechatArticle extends Model
 {
     use HasFactory;
+
+    public $table = 'wechat_article_list';
     public $timestamps = false;
     protected $guarded = [];
 
@@ -29,39 +30,14 @@ class WechatArticle extends Model
         self::STATUS_FORMAT => '已',
     ];
 
-    public $table = 'wechat_article';
-
-    public function getContent()
+    public function account()
     {
-        $content = WechatArticleFormatService::format($this->content_html);
-
-        return $content;
+        return $this->belongsTo(WechatAccount::class, '__biz', '__biz');
     }
 
-    public function format()
+    public function content()
     {
-        $data = [
-            'content' => $this->getContent(),
-            'format_status' => self::STATUS_FORMAT
-        ];
-
-        if($this->dynamic){
-            $data['read_num'] = $this->dynamic->read_num;
-            $data['like_num'] = $this->dynamic->like_num;
-            $data['comment_count'] = $this->dynamic->comment_count;
-        }
-
-        if($this->articleList){
-            $data['digest'] =  $this->articleList->digest;
-            $data['copyright_status'] =  $this->articleList->copyright_stat;
-        }
-
-        $this->update($data);
-    }
-
-    public function articleList()
-    {
-        return $this->hasOne(WechatArticleList::class, 'sn', 'sn');
+        return $this->hasOne(WechatArticleContent::class, 'sn', 'sn');
     }
 
     public function dynamic()
@@ -82,6 +58,25 @@ class WechatArticle extends Model
                 return '转载';
             default:
                 return '未知';
+        }
+    }
+
+    public function format()
+    {
+        $data = [
+            'format_status' => self::STATUS_FORMAT
+        ];
+
+        if ($this->dynamic) {
+            $data['read_num'] = $this->dynamic->read_num;
+            $data['like_num'] = $this->dynamic->like_num;
+            $data['comment_count'] = $this->dynamic->comment_count;
+        }
+
+        $this->update($data);
+
+        if($this->content){
+            $this->content->format();
         }
     }
 }

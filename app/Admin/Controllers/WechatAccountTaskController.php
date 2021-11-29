@@ -27,7 +27,7 @@ class WechatAccountTaskController extends AdminController
         $grid = new Grid(new WechatAccountTask());
 
         $grid->column('id', __('Id'));
-        $grid->column('__biz', __('Biz'));
+        $grid->column('account.account', __('Biz'));
         $grid->column('last_publish_time', __('Last publish time'));
         $grid->column('last_spider_time', __('Last spider time'));
         $grid->column('is_zombie', __('Is zombie'));
@@ -63,7 +63,7 @@ class WechatAccountTaskController extends AdminController
     {
         $form = new Form(new WechatAccountTask());
 
-        $form->text('__biz', __('  biz'));
+        $form->text('__biz', __('Biz'));
         $form->datetime('last_publish_time', __('Last publish time'))->default(date('Y-m-d H:i:s'));
         $form->datetime('last_spider_time', __('Last spider time'))->default(date('Y-m-d H:i:s'));
         $form->number('is_zombie', __('Is zombie'));
