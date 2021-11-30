@@ -1,6 +1,12 @@
 ## 项目说明
 
-项目基于 laravel 及 laravel-admin 进行开发，为 wechat-spider 项目的管理后台，方便查看检索爬取的任务及管理文章数据。
+项目基于 laravel 及 laravel-admin 进行开发，为 [wechat-spider](https://github.com/nosun/wechat-spider) 项目的管理后台，方便查看检索爬取的任务及管理文章数据。
+
+## 项目功能
+
+- 公众号管理：查看，导入公众号爬取任务
+- 爬取任务管理：查看
+- 公众号文章管理：查看，排序，检索，格式化
 
 ## 项目运行要求
 
@@ -23,3 +29,5 @@
 ## 正式部署
 
 正式部署流程和项目安装流程一致，主要的区别在于 nginx/apache 配置以及域名解析。
+
+
