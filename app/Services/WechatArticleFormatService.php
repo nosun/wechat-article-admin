@@ -9,41 +9,51 @@ class WechatArticleFormatService
     public static function format(String $content_original): string
     {
         $content_original = stripslashes($content_original);
+        $content_original = self::preClean($content_original);
         $dom = HtmlDomParser::str_get_html($content_original);
 
         // remove style
         self::removeStyle($dom, 'div');
 
-        // get all paragraphs and extra the content
+        // get all paragraphs
         $ps = $dom->find('p');
         $content = '';
 
         if ($ps->count()) {
             foreach ($ps as $p) {
-                $spans = $p->find('span');
-                if ($spans->count()) {
-                    $content .= '<p>';
-                    foreach ($spans as $span) {
-                        $span_content = trim($span->innerHtml());
-                        if (!empty($span_content)) {
-                            $content .= $span_content;
-                        }
-                    }
-                    $content .= '</p>';
-                } else {
-                    $p_content = trim($p->innerHtml());
-                    if (!empty($p_content)) {
-                        $content .= "<p>" . $p_content . "</p>";
-                    }
+                $p_content = trim($p->innerHtml());
+                if (!empty($p_content)) {
+                    $content .= "<p>" . $p_content . "</p>";
                 }
             }
         }
 
+        $content = self::finalClean($content);
+
+        return $content;
+    }
+
+    /**
+     * 预清洗
+     * @param $content
+     * @return mixed|string
+     */
+    public static function preClean($content)
+    {
+        return $content;
+    }
+
+    /**
+     * @param $content
+     * @return string
+     */
+    public static function finalClean($content)
+    {
         $content = self::removeHtmlTag($content);
         $content = self::removeBlank($content);
         $content = self::removeSpecialChar($content);
+        $content = self::removeBlankStrong($content);
         $content = self::removeBlankParagraph($content);
-
         return $content;
     }
 
@@ -74,30 +84,35 @@ class WechatArticleFormatService
         $content = preg_replace("/<img(.*?)>/", '', $content);
         $content = preg_replace("/<iframe(.*?)\/iframe>/", '', $content);
         $content = preg_replace("/<a(.*?)\/a>/", '', $content);
-        $content = str_replace('<br>', '', $content);
-        $content = str_replace('<br />', '', $content);
-        $content = str_replace('<strong>', '', $content);
-        $content = str_replace('</strong>', '', $content);
-        $content = str_replace('<span>', '', $content);
-        $content = str_replace('</span>', '', $content);
+        $content = str_replace(['<br>', '<br />'], ['', ''], $content);
+        $content = str_replace(['<span>', '</span>'], ['', ''], $content);
+        $content = str_replace(['<em>', '</em>'], ['', ''], $content);
         return $content;
     }
 
     public static function removeBlank($content)
     {
-        $content = str_replace(['u00A0', 'u0020', 'u3000', 'xa0','\\n'], ['', '', '', '',''], $content);
+        $content = str_replace(['u00A0', 'u0020', 'u3000', 'xa0', '\\n'], ['', '', '', '', ''], $content);
         return $content;
     }
 
     public static function removeSpecialChar($content)
     {
-        $content = str_replace(['◆', '■', '♥','▋'], ['', '', '',''], $content);
+        $content = str_replace(['◆', '■', '♥', '▋'], ['', '', '', ''], $content);
         return $content;
     }
 
     public static function removeBlankParagraph($content)
     {
         $content = str_replace('<p></p>', '', $content);
+        return $content;
+    }
+
+    public static function removeBlankStrong($content)
+    {
+        $content = str_replace('<strong><strong>', '<strong>', $content);
+        $content = str_replace('</strong></strong>', '</strong>', $content);
+        $content = str_replace('<strong></strong>', '', $content);
         return $content;
     }
 }

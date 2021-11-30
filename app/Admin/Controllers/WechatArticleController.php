@@ -67,7 +67,10 @@ class WechatArticleController extends AdminController
             });
         });
 
-        $grid->column('id', __('Id'));
+        $grid->column('id', __('Id'))->display(function($value){
+            return generateLink($this->url, $value, '_blank');
+        });
+
         $grid->column('title', __('Title'))->display(function ($value) {
             return generateLink(route('admin.wechat-articles.show', ['wechat_article' => $this->id]),
                 $value, '_blank'
