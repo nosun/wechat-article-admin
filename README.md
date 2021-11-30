@@ -17,3 +17,9 @@
 5. 运行 ```php artisan migrate```，更新数据库结构。
 6. 运行 ```php artisan db:seed ```, 安装后台基础菜单。
 7. 运行 ```php artisan admin:create-user ```, 根据命令行提示，创建后台用户。
+8. 运行 ```php artisan serve```, 项目启动。
+9. 访问 ```127.0.0.1:8000/admin```,即可进入管理后台。
+
+## 正式部署
+
+正式部署流程和项目安装流程一致，主要的区别在于 nginx/apache 配置以及域名解析。
