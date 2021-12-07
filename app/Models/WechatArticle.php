@@ -75,8 +75,22 @@ class WechatArticle extends Model
 
         $this->update($data);
 
-        if($this->content){
+        if ($this->content) {
             $this->content->format();
         }
+    }
+
+    public function getSource()
+    {
+        return $this->account->account;
+    }
+
+    public function getThumb()
+    {
+        return $this->cover;
+    }
+
+    public function getContent(){
+        return $this->content->content;
     }
 }

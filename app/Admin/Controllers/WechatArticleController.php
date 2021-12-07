@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Admin\Actions\WechatArticle\AllFormat;
 use App\Admin\Actions\WechatArticle\BatchFormat;
 use App\Admin\Actions\WechatArticle\Format;
+use App\Admin\Actions\WechatArticle\Push;
 use App\Models\WechatArticle;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
@@ -96,6 +97,7 @@ class WechatArticleController extends AdminController
             $actions->disableDelete();
             $actions->disableView();
             $actions->add(new Format());
+            $actions->add(new Push());
         });
 
         $grid->disableBatchActions(false);
@@ -150,9 +152,7 @@ class WechatArticleController extends AdminController
         $form->column(1 / 2, function ($form) {
             $form->text('author', __('Author'))->setWidth(10);
             $form->UEditor('content.content', __('Content'))->setWidth(10);
-            $form->select('status', __('Status'))
-                ->options(WechatArticle::$states)
-                ->setWidth(4);
+            $form->hidden('status');
         });
 
         $form->tools(function ($tools) {

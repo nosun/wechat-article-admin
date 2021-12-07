@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
     <div class="raw">
-        {{ $article->getContent() }}
+        {{ $article->content->getContent() }}
     </div>
    <div class="content">
-       {!! $article->getContent() !!}
+       {!! $article->content->getContent() !!}
    </div>
 @endsection
