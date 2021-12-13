@@ -6,6 +6,7 @@ use App\Models\WechatArticle;
 use App\Services\GroupSiteService;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class Push extends RowAction
@@ -22,6 +23,7 @@ class Push extends RowAction
             $pusher->transferArticle($article, $site_id);
             return $this->response()->success("成功推送")->refresh();
         } catch (\Exception $exception) {
+            Log::error($exception->getTraceAsString());
             return $this->response()->error($exception->getMessage())->refresh();
         }
     }
