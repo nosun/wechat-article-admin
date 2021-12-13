@@ -53,6 +53,7 @@ class GroupSiteService
      */
     public function transferArticle(WechatArticle $article, $site_id)
     {
+        Log::info($this->group_site_base_uri);
         $response = Http::post($this->group_site_base_uri . '/articles', [
             'title' => $article->title,
             'digest' => $article->digest,
