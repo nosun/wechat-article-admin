@@ -7,6 +7,7 @@ use App\Models\WechatArticle;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use \Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class GroupSiteService
 {
@@ -66,6 +67,7 @@ class GroupSiteService
         ]);
 
         if ($response->status() !== 200) {
+            Log::error($response->body());
             throw new \Exception('failed:' . $response->status());
         }
 
