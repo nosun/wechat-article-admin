@@ -14,10 +14,12 @@ class WechatArticleTask extends Model
 
     const STATUS_PENDING = 2;
     const STATUS_FINISHED = 1;
+    const STATUS_DEFAULT = 0;
 
     public static $states = [
         self::STATUS_PENDING => '待爬取',
         self::STATUS_FINISHED => '已爬取',
+        self::STATUS_DEFAULT => '待爬取',
     ];
 
     public function article()
