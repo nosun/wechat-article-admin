@@ -94,7 +94,6 @@ class WechatArticleController extends AdminController
         $grid->disableCreateButton();
 
         $grid->actions(function ($actions) {
-            $actions->disableDelete();
             $actions->disableView();
             $actions->add(new Format());
             $actions->add(new Push());
@@ -103,7 +102,6 @@ class WechatArticleController extends AdminController
         $grid->disableBatchActions(false);
         $grid->batchActions(function ($actions) {
             $actions->add(new BatchFormat());
-            $actions->disableDelete();
         });
 
         $grid->tools(function($tools){
@@ -127,10 +125,6 @@ class WechatArticleController extends AdminController
         $show->field('title', __('Title'))->html();
         $show->field('content.content', __('Content'))->html();
 
-        $show->panel()->tools(function ($tools) {
-            $tools->disableDelete();
-        });
-
         return $show;
     }
 
@@ -153,10 +147,6 @@ class WechatArticleController extends AdminController
             $form->text('author', __('Author'))->setWidth(10);
             $form->UEditor('content.content', __('Content'))->setWidth(10);
             $form->hidden('status');
-        });
-
-        $form->tools(function ($tools) {
-            $tools->disableDelete();
         });
 
         $form->disableReset();
