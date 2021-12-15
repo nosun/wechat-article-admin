@@ -18,7 +18,7 @@ class WechatArticleFormatService
         $dom = HtmlDomParser::str_get_html($content_original);
 
         // get all paragraphs
-        $ps = $dom->find('p');
+        $ps = $dom->find('p,section');
 
         $content = '';
 
@@ -44,6 +44,7 @@ class WechatArticleFormatService
     public static function preClean($content)
     {
         $content = str_replace('""', '"', $content);
+        $content = self::removeBlankStrong($content);
         return $content;
     }
 
