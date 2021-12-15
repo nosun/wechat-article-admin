@@ -80,9 +80,7 @@ class WechatArticleController extends AdminController
         $grid->column('read_num', __('Read num'))->sortable();
         $grid->column('like_num', __('Like num'))->sortable();
         $grid->column('account.account', __('Account'));
-        $grid->column('status', __('Status'))->display(function ($value) {
-            return WechatArticle::$states[$value];
-        });
+        $grid->column('status', __('Status'))->select(WechatArticle::$states);
         $grid->column('copyright_stat', __('Copyright status'))->display(function ($value) {
             return WechatArticle::getCopyRight($value);
         });
