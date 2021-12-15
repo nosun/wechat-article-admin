@@ -8,4 +8,9 @@
    <div class="content">
        {{ $article->content->getContent() }}
    </div>
+
+    <hr>
+    <div class="content">
+        {!! $article->content->getContent() !!}
+    </div>
 @endsection
