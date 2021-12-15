@@ -8,15 +8,18 @@ class WechatArticleFormatService
 {
     public static function format(String $content_original): string
     {
+        $content_original = htmlspecialchars_decode($content_original);
         $content_original = stripslashes($content_original);
         $content_original = self::preClean($content_original);
-        $dom = HtmlDomParser::str_get_html($content_original);
-
         // remove style
-        self::removeStyle($dom, 'div');
+        $content_original = self::removeHtmlStyle($content_original);
+        // dd($content_original);
+
+        $dom = HtmlDomParser::str_get_html($content_original);
 
         // get all paragraphs
         $ps = $dom->find('p');
+
         $content = '';
 
         if ($ps->count()) {
@@ -40,6 +43,7 @@ class WechatArticleFormatService
      */
     public static function preClean($content)
     {
+        $content = str_replace('""', '"', $content);
         return $content;
     }
 
@@ -86,7 +90,22 @@ class WechatArticleFormatService
         $content = preg_replace("/<a(.*?)\/a>/", '', $content);
         $content = str_replace(['<br>', '<br />'], ['', ''], $content);
         $content = str_replace(['<span>', '</span>'], ['', ''], $content);
+        $content = str_replace(['<section>', '</section>'], ['', ''], $content);
         $content = str_replace(['<em>', '</em>'], ['', ''], $content);
+        return $content;
+    }
+
+    public static function removeHtmlStyle($content)
+    {
+        $content = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) rgb=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) normal=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) simhei=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) break-word=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) border-box=".*?"/i', '$1', $content);
+//        $content = preg_replace('/(<[^>]+) center=".*?"/i', '$1', $content);
+        $content = preg_replace('/(<[^>]+) class=".*?"/i', '$1', $content);
+        $content = preg_replace('/(<[^>]+) id=".*?"/i', '$1', $content);
         return $content;
     }
 
