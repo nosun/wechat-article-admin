@@ -21,6 +21,9 @@ class Push extends RowAction
 
         try {
             $pusher->transferArticle($article, $site_id);
+            $article->update([
+                'status' => WechatArticle::STATUS_USED
+            ]);
             return $this->response()->success("成功推送")->refresh();
         } catch (\Exception $exception) {
             Log::error($exception->getTraceAsString());
