@@ -38,7 +38,7 @@ class GroupSiteService
 
             if (count($groupsites)) {
                 foreach ($groupsites as $row) {
-                    $data[$row['name']] = $row['name'];
+                    $data[$row['domain']] = $row['name'];
                 }
             }
 
@@ -51,7 +51,7 @@ class GroupSiteService
      * @return mixed
      * @throws \Exception
      */
-    public function transferArticle(WechatArticle $article, $site_name)
+    public function transferArticle(WechatArticle $article, $domain)
     {
         Log::info($this->group_site_base_uri);
         $response = Http::withHeaders([
@@ -65,7 +65,7 @@ class GroupSiteService
             'content' => $article->getContent(),
             'app_id' => $this->getAppId(),
             'app_content_id' => $article->id,
-            'site_name' => $site_name,
+            'domain' => $domain,
             'signature' => $this->getSignature($article),
         ]);
 
