@@ -68,23 +68,25 @@ class WechatArticleController extends AdminController
             });
         });
 
-        $grid->column('id', __('Id'))->display(function($value){
+        $grid->column('id', __('Id'))->display(function ($value) {
             return generateLink($this->url, $value, '_blank');
         });
-
+        $grid->column('account.account', __('Account'));
         $grid->column('title', __('Title'))->display(function ($value) {
             return generateLink(route('admin.wechat-articles.show', ['wechat_article' => $this->id]),
                 $value, '_blank'
             );
         })->width(320);
         $grid->column('read_num', __('Read num'))->sortable();
-        $grid->column('like_num', __('Like num'))->sortable();
-        $grid->column('account.account', __('Account'));
+//        $grid->column('like_num', __('Like num'))->sortable();
         $grid->column('status', __('Status'))->select(WechatArticle::$states);
-        $grid->column('copyright_stat', __('Copyright status'))->display(function ($value) {
-            return WechatArticle::getCopyRight($value);
+        $grid->column('using_site_name', __('Using site name'))->display(function ($value) {
+            return $value ?: '待分配';
         });
-        $grid->column('author', __('Author'));
+//        $grid->column('copyright_stat', __('Copyright status'))->display(function ($value) {
+//            return WechatArticle::getCopyRight($value);
+//        });
+//        $grid->column('author', __('Author'));
         $grid->column('publish_time', __('Publish time'))->sortable()->display(function ($value) {
             return substr($value, 0, 10);
         });
@@ -100,9 +102,10 @@ class WechatArticleController extends AdminController
         $grid->disableBatchActions(false);
         $grid->batchActions(function ($actions) {
             $actions->add(new BatchFormat());
+            $actions->add(new BatchFormat());
         });
 
-        $grid->tools(function($tools){
+        $grid->tools(function ($tools) {
             $tools->append(new AllFormat());
         });
 
