@@ -17,12 +17,13 @@ class Push extends RowAction
     {
         $pusher = new GroupSiteService();
 
-        $site_id = $request->post('site_id');
+        $site_name = $request->post('site_name');
 
         try {
-            $pusher->transferArticle($article, $site_id);
+            $pusher->transferArticle($article, $site_name);
             $article->update([
-                'status' => WechatArticle::STATUS_USED
+                'status' => WechatArticle::STATUS_USED,
+                'using_site_name' => $site_name,
             ]);
             return $this->response()->success("成功推送")->refresh();
         } catch (\Exception $exception) {
@@ -36,7 +37,7 @@ class Push extends RowAction
         $groupsites = (new GroupSiteService())->getGroupsites();
 
         if ($groupsites) {
-            $this->select('site_id', '选择站点')
+            $this->select('site_name', '选择站点')
                 ->options($groupsites)
                 ->rules('required');
         }

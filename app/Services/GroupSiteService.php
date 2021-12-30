@@ -25,7 +25,7 @@ class GroupSiteService
     {
 //        Cache::forget('groupsites');
 
-        return Cache::remember('groupsites', 86400, function () {
+        return Cache::remember('groupsites', 3600, function () {
             $response = Http::get($this->group_site_base_uri . '/groupsites');
 
             if ($response->status() !== 200) {
@@ -38,7 +38,7 @@ class GroupSiteService
 
             if (count($groupsites)) {
                 foreach ($groupsites as $row) {
-                    $data[$row['id']] = $row['name'];
+                    $data[$row['name']] = $row['name'];
                 }
             }
 
@@ -51,7 +51,7 @@ class GroupSiteService
      * @return mixed
      * @throws \Exception
      */
-    public function transferArticle(WechatArticle $article, $site_id)
+    public function transferArticle(WechatArticle $article, $site_name)
     {
         Log::info($this->group_site_base_uri);
         $response = Http::withHeaders([
@@ -65,7 +65,7 @@ class GroupSiteService
             'content' => $article->getContent(),
             'app_id' => $this->getAppId(),
             'app_content_id' => $article->id,
-            'site_id' => $site_id,
+            'site_name' => $site_name,
             'signature' => $this->getSignature($article),
         ]);
 
