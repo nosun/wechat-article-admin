@@ -58,6 +58,7 @@ class WechatArticleController extends AdminController
                 ]);
 
                 $filter->equal('status', __('Status'))->select(WechatArticle::$states);
+                $filter->equal('id', __('Id'));
             });
 
             $filter->column(1 / 2, function ($filter) {
@@ -65,6 +66,7 @@ class WechatArticleController extends AdminController
                 $filter->gt('read_num', __('Read num'));
                 $filter->between('publish_time', __('Publish time'))->datetime();
                 $filter->equal('format_status', __('Format status'))->select(WechatArticle::$format_states);
+                $filter->equal('using_site_name', __('Using site name'));
             });
         });
 
