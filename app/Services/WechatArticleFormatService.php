@@ -18,27 +18,30 @@ class WechatArticleFormatService
         $config->set('HTML.Allowed', 'p,strong'); // replace with your doctype
         $purifier = new HTMLPurifier($config);
         $pure_html = $purifier->purify($content_original);
+
+
 //        // remove style
 //        $content_original = self::removeHtmlStyle($content_original);
 //        // dd($content_original);
 //
-//        $dom = HtmlDomParser::str_get_html($content_original);
+        $dom = HtmlDomParser::str_get_html($pure_html);
 //
 //        // get all paragraphs
-//        $ps = $dom->find('p,section');
+        $ps = $dom->find('p, section');
 //
-//        $content = '';
+        $content = '';
 //
-//        if ($ps->count()) {
-//            foreach ($ps as $p) {
-//                $p_content = trim($p->innerHtml());
-//                if (!empty($p_content)) {
-//                    $content .= "<p>" . $p_content . "</p>";
-//                }
-//            }
-//        }
-//
-        $content = self::finalClean($pure_html);
+        if ($ps->count()) {
+            foreach ($ps as $p) {
+                $p_content = trim($p->innerHtml());
+                if (!empty($p_content)) {
+                    $content .= "<p>" . $p_content . "</p>";
+                }
+            }
+        }
+        $content = self::finalClean($content);
+
+
 
         return $content;
     }
@@ -61,11 +64,11 @@ class WechatArticleFormatService
      */
     public static function finalClean($content)
     {
-        $content = self::removeHtmlTag($content);
+//        $content = self::removeHtmlTag($content);
         $content = self::removeBlank($content);
         $content = self::removeSpecialChar($content);
-        $content = self::removeBlankStrong($content);
-        $content = self::removeBlankParagraph($content);
+//        $content = self::removeBlankStrong($content);
+//        $content = self::removeBlankParagraph($content);
         return $content;
     }
 
