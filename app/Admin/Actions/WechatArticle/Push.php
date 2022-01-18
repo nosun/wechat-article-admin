@@ -2,6 +2,7 @@
 
 namespace App\Admin\Actions\WechatArticle;
 
+use App\Jobs\PushArticle;
 use App\Models\WechatArticle;
 use App\Services\GroupSiteService;
 use Encore\Admin\Actions\RowAction;
@@ -15,16 +16,10 @@ class Push extends RowAction
 
     public function handle(WechatArticle $article, Request $request)
     {
-        $pusher = new GroupSiteService();
-
         $domain = $request->post('domain');
 
         try {
-            $pusher->transferArticle($article, $domain);
-            $article->update([
-                'status' => WechatArticle::STATUS_USED,
-                'using_site_name' => $domain,
-            ]);
+            PushArticle::dispatchSync($article, $domain);
             return $this->response()->success("成功推送")->refresh();
         } catch (\Exception $exception) {
             Log::error($exception->getTraceAsString());

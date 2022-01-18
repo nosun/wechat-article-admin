@@ -53,6 +53,8 @@ class GroupSiteService
      */
     public function transferArticle(WechatArticle $article, $domain)
     {
+        Log::info($article->id);
+        return true;
         Log::info($this->group_site_base_uri);
         $response = Http::withHeaders([
             'accept' => 'application/json'
@@ -71,7 +73,7 @@ class GroupSiteService
 
         if ($response->status() !== 200) {
             Log::error($response->body());
-            throw new \Exception('failed:' . $response->status());
+            return false;
         }
 
         return json_decode($response->body());

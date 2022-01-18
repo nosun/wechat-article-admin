@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Admin\Actions\WechatArticle\AllFormat;
 use App\Admin\Actions\WechatArticle\BatchFormat;
+use App\Admin\Actions\WechatArticle\BatchPush;
 use App\Admin\Actions\WechatArticle\Format;
 use App\Admin\Actions\WechatArticle\Push;
 use App\Models\WechatArticle;
@@ -102,9 +103,10 @@ class WechatArticleController extends AdminController
         });
 
         $grid->disableBatchActions(false);
+
         $grid->batchActions(function ($actions) {
             $actions->add(new BatchFormat());
-            $actions->add(new BatchFormat());
+            $actions->add(new BatchPush());
         });
 
         $grid->tools(function ($tools) {
