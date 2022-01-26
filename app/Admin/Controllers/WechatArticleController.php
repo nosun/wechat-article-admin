@@ -64,7 +64,7 @@ class WechatArticleController extends AdminController
 
             $filter->column(1 / 2, function ($filter) {
                 $filter->like('author', __('Author'));
-                $filter->gt('read_num', __('Read num'));
+                $filter->lt('read_num', __('Read num'));
                 $filter->between('publish_time', __('Publish time'))->datetime();
                 $filter->equal('format_status', __('Format status'))->select(WechatArticle::$format_states);
                 $filter->equal('using_site_name', __('Using site name'));
